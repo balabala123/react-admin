@@ -1,27 +1,31 @@
-import logo from './logo.svg';
-import './App.scss';
-import { Button } from 'antd';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Button type="primary">Primary Button</Button>
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import React from 'react';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+// 引用组件
+import Login from './views/login/Index';
+import Index from './views/index/Index';
+// 私有组件方法
+import PrivateRouter from "./components/privateRouter/Index";
+// store
+import Store from "@/stroe/Index";
+// Provider
+import { Provider } from "react-redux";
+class App extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {};
+  }
+  render(){
+    return (
+      <Provider store={Store}>
+        <BrowserRouter>
+          <Switch>
+            <Route exact component={Login} path="/" />
+            <PrivateRouter component={Index} path="/index" />
+          </Switch>
+        </BrowserRouter>
+      </Provider>
+    )
+  }
 }
 
 export default App;

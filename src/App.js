@@ -9,6 +9,7 @@ import PrivateRouter from "./components/privateRouter/Index";
 import Store from "@/stroe/Index";
 // Provider
 import { Provider } from "react-redux";
+import {AliveScope} from 'react-activation'
 class App extends React.Component {
   constructor(props){
     super(props);
@@ -16,6 +17,7 @@ class App extends React.Component {
   }
   render(){
     return (
+      <AliveScope>
       <Provider store={Store}>
         <BrowserRouter>
           <Switch>
@@ -24,6 +26,7 @@ class App extends React.Component {
           </Switch>
         </BrowserRouter>
       </Provider>
+      </AliveScope>
     )
   }
 }

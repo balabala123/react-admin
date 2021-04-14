@@ -9,9 +9,10 @@ import department from "./reducer/Department";
 import job from "./reducer/Job";
 import config from "./reducer/Config";
 import app from "./reducer/App";
+import tab from "./reducer/TabPages";
 
 // 创建 Reducer对象
-const allReducer = { department, job, config, app }
+const allReducer = { department, job, config, app, tab }
 const rootReducer = combineReducers(allReducer);
 
 // 创建 Store 实例

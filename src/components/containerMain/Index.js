@@ -4,7 +4,9 @@ import { Switch } from 'react-router-dom';
 import PrivateRouter from "../privateRouter/Index";
 /** 自动化工程 */
 import Components from "./components";
-
+import {
+  Provider,
+} from 'react-keep-alive';
 class ContainerMain extends React.Component {
   constructor(props){
     super(props);
@@ -12,13 +14,15 @@ class ContainerMain extends React.Component {
   }
   render(){
     return (
-        <Switch>
-          {
-            Components.map(item => {
-              return <PrivateRouter exact key={item.path} path={item.path} component={item.component} />
-            })
-          }
-        </Switch>
+        <Provider>
+          <Switch>
+            {
+              Components.map(item => {
+                return <PrivateRouter exact key={item.path} path={item.path} component={item.component} />
+              })
+            }
+          </Switch>
+        </Provider>
     )
   }
 }

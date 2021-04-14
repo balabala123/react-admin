@@ -10,6 +10,7 @@ import { bindActionCreators } from "redux";
 // action
 //action
 import { getUserRoleAction } from "@/stroe/action/App";
+import { edit as editTabPages } from "@/stroe/action/TabPages";
 const { SubMenu } = Menu;
 
 class AsideMenu extends Component {
@@ -37,7 +38,17 @@ class AsideMenu extends Component {
     }
 
     /** 选择菜单  */
-    selectMenu = ({ item, key, keyPath, domEvent }) => {
+    selectMenu = ({item, key, keyPath}) => {
+        // 添加页签逻辑-----------start---------------
+        // this.props.history.push(key);
+        let {tabPages, actions, history} = this.props;
+        tabPages[key] = {checked: true, title: item.node.outerText};
+        for (let tabKey in tabPages) {
+            if (tabKey !== key) tabPages[tabKey].checked = false;
+        }
+        actions.editTabPages(tabPages)
+        history.push(key)
+        // 添加页签逻辑--------------end-----------------
         const menuHigh = {
             selectedKeys: key,
             openKeys: keyPath[keyPath.length - 1]// 数组的长度减1，即是数组的最后一项
@@ -63,7 +74,8 @@ class AsideMenu extends Component {
     renderMenu = ({title, key}) => {
         return (
             <Menu.Item key={key}>
-                <Link to={key}><span>{title}</span></Link>
+                {/* <Link to={key}><span>{title}</span></Link> */}
+                <span>{title}</span>
             </Menu.Item>
         )
     }
@@ -107,13 +119,15 @@ class AsideMenu extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    routers: state.app.rotuers
+    routers: state.app.rotuers,
+    tabPages: state.tab.tabPages
 })
 
 const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators({
-            headnlerUserRole: getUserRoleAction
+            headnlerUserRole: getUserRoleAction,
+            editTabPages
         }, dispatch)
 
     }

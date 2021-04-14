@@ -2,6 +2,7 @@ import React, { Component } from "react";
 // layout组件
 import LayoutAside from "./components/aside";
 import LayoutHeader from "./components/header";
+import LayoutTab from "./components/tab";
 import ContainerMain from "../../components/containerMain/Index";
 // css
 import "./layout.scss";
@@ -33,6 +34,7 @@ class Index extends Component {
                 <Header className="layout-header"><LayoutHeader toggle={this.toggleCollapsed} collapsed={this.state.collapsed}/></Header>
                 <Layout>
                     <Sider width="250px" collapsed={this.state.collapsed}><LayoutAside/></Sider>
+                    <LayoutTab></LayoutTab>
                     <Content className="layout-main">
                         <ContainerMain />
                     </Content>

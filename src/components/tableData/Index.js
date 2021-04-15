@@ -3,10 +3,10 @@ import React, { Component, Fragment } from "react";
 import PropTypes from 'prop-types';
 // antd
 import { message, Modal, Row, Col } from "antd";
-// api
-import { TableList, TableDelete } from "@api/common";
+// server
+import { TableList, TableDelete } from "@server/common";
 // url
-import requestUrl from "@api/requestUrl";
+import requestUrl from "@server/requestUrl";
 // Table basis component
 import TableBasis from "./Table";
 import FormSearch from "../formSearch/Index";

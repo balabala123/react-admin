@@ -4,10 +4,11 @@ import PropTypes from 'prop-types';
 // antd
 import { Form, Input, Button, Select, InputNumber, Radio } from "antd";
 // store
-import Store from "@/stroe/Index";
+import Store from "@/store/Index";
 const { Option } = Select;
 class FormSearch extends Component {
 
+    formRef = React.createRef()
     constructor(props){
         super(props);
         this.state = {
@@ -21,7 +22,7 @@ class FormSearch extends Component {
     }  
 
     componentWillReceiveProps({ formConfig }){
-        this.refs.form.setFieldsValue(formConfig.setFieldValue)
+        this.formRef.current.setFieldsValue(formConfig.setFieldValue)
     }
 
     rules = (item) => {
@@ -119,7 +120,7 @@ class FormSearch extends Component {
 
     render(){
         return (
-            <Form layout="inline" ref="form" onFinish={this.onSubmit} initialValues={this.props.formConfig.initValue} {...this.props.formLayout}>
+            <Form layout="inline" ref={this.formRef} onFinish={this.onSubmit} initialValues={this.props.formConfig.initValue} {...this.props.formLayout}>
                 { this.initFormItem() }
                 <Form.Item>
                     <Button loading={this.state.loading} type="primary" htmlType="submit">搜索</Button>

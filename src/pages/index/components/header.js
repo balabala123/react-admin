@@ -8,7 +8,7 @@ import "./aside.scss";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 //action
-import { logoutAction } from "@/stroe/action/App";
+import { logoutAction } from "@/store/action/App";
 class Header extends Component {
     constructor(props){
         super(props);

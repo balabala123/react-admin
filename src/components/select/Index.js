@@ -2,9 +2,9 @@ import React, { Component } from "react";
 // propTypes
 import PropTypes from 'prop-types';
 // url
-import requestUrl from "@api/requestUrl";
+import requestUrl from "@server/requestUrl";
 // API
-import { requestData } from "@api/common";
+import { requestData } from "@server/common";
 // antd
 import { Select } from "antd";
 const { Option } = Select;

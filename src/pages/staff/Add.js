@@ -2,10 +2,10 @@ import React, { Component, Fragment } from "react";
 // antd
 import { message } from "antd";
 // API
-import { Add, Detailed, Edit } from "@/api/staff";
-import { requestData } from "@api/common";
+import { Add, Detailed, Edit } from "@/server/staff";
+import { requestData } from "@server/common";
 // url
-import requestUrl from "@api/requestUrl";
+import requestUrl from "@server/requestUrl";
 // 组件
 import FormCom from "@c/form/Index";
 // 默认数据

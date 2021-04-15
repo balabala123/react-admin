@@ -13,7 +13,7 @@ import CryptoJs from 'crypto-js';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 //action
-import { setTokenAction, setUsernameAction, accountLoginAction } from "@/stroe/action/App";
+import { setTokenAction, setUsernameAction, accountLoginAction } from "@/store/action/App";
 class LoginForm extends Component{
     constructor(){
         super();

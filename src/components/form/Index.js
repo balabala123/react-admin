@@ -2,9 +2,9 @@ import React, { Component } from "react";
 // propTypes
 import PropTypes from 'prop-types';
 // API 
-import { requestData } from "@api/common";
+import { requestData } from "@server/common";
 // url
-import requestUrl from "@api/requestUrl";
+import requestUrl from "@server/requestUrl";
 // components
 import SelectComponent from "../select/Index";
 import UploadComponent from "../upload/Index";

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 // API
-import { GetCode } from "../../api/account";
+import { GetCode } from "../../server/account";
 // antd
 import { Button, message } from "antd";
 // 验证

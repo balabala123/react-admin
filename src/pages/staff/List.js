@@ -1,11 +1,12 @@
 import React, { Component, Fragment } from "react";
+// 
+import { Link } from "react-router-dom";
 // antd
 import { Button, Switch, message } from "antd";
-// api
-import { Status } from "@api/user";
+// server
+import { Status } from "@server/staff";
 // table 组件
 import TableComponent from "@c/tableData/Index";
-import UserModal from "./components/UserModal";
 class StaffList extends Component {
     constructor(props){
         super(props);
@@ -20,23 +21,28 @@ class StaffList extends Component {
             keyWork: "",
             // 表头
             tableConfig: {
-                url: "userList",
+                url: "staffList",
                 checkbox: true,
                 thead: [
                     { 
-                        title: "用户名", 
-                        dataIndex: "username", 
-                        key: "username"
+                        title: "姓名", 
+                        dataIndex: "full_name", 
+                        key: "full_name"
                     },
                     { 
-                        title: "真实姓名", 
-                        dataIndex: "truename", 
-                        key: "truename"
+                        title: "职位名称", 
+                        dataIndex: "jobName", 
+                        key: "jobName"
                     },
                     { 
-                        title: "手机号", 
-                        dataIndex: "phone", 
-                        key: "phone"
+                        title: "部门名称", 
+                        dataIndex: "name", 
+                        key: "name"
+                    },
+                    { 
+                        title: "入职日期", 
+                        dataIndex: "job_entry_date", 
+                        key: "job_entry_date"
                     },
                     { 
                         title: "禁启用", 
@@ -47,11 +53,6 @@ class StaffList extends Component {
                         }
                     },
                     { 
-                        title: "权限", 
-                        dataIndex: "role_str", 
-                        key: "role_str"
-                    },
-                    { 
                         title: "操作", 
                         dataIndex: "operation", 
                         key: "operation", 
@@ -59,8 +60,10 @@ class StaffList extends Component {
                         render: (text, rowData) => {
                             return (
                                 <div className="inline-button">
-                                    <Button type="primary" onClick={() => this.userModal({status: true, user_id: rowData.id})}>编辑</Button>
-                                    <Button onClick={() => this.delete(rowData.id)}>删除</Button>
+                                    <Button type="primary">
+                                        <Link to={{ pathname: '/index/staff/add', state:{ id: rowData.staff_id}}}>编辑</Link>
+                                    </Button>
+                                    <Button onClick={() => this.delete(rowData.staff_id)}>删除</Button>
                                     {/* 
                                         在父组件获取子组件的实例
                                         1、在子组件调用父组件方法，并把子组件实例传回给父组件，（已经存储了子组件的实例）
@@ -86,9 +89,7 @@ class StaffList extends Component {
                         style: { width: "100px" },
                         optionsKey: "status"
                     },
-                ],
-                formSearchCol: 18,
-                formRightCol: 6,
+                ]
             },
             // 表的数据
             data: []
@@ -101,22 +102,16 @@ class StaffList extends Component {
     getChildRef = (ref) => {
         this.tableComponent = ref; // 存储子组件
     }
-    // 获取弹窗子组件实例
-    getUserModalRef = (ref) => { this.child = ref }
-    // 显示弹窗
-    userModal = (data) => {
-        this.child.visibleModal(data);
-    }
     
     /** 禁启用 */
     onHandlerSwitch(data){
         if(this.state.flag) { return false; }
         const requestData = {
-            id: data.id,
+            id: data.staff_id,
             status: !data.status
         }
         // 第一种做法，用组件本身异步
-        this.setState({id: data.id}) 
+        this.setState({id: data.staff_id}) 
         // 第二种做法，自己做的开关
         // this.setState({flag: true}) 
         Status(requestData).then(response => {
@@ -135,10 +130,7 @@ class StaffList extends Component {
     render(){
         return (
             <Fragment>
-                <TableComponent onRef={this.getChildRef} batchButton={true} config={this.state.tableConfig}>
-                    <Button type="primary" ref="userAdd" onClick={() => this.userModal({ status: true })}>新增用户</Button>
-                </TableComponent>
-                <UserModal onRef={this.getUserModalRef} />
+                <TableComponent onRef={this.getChildRef} batchButton={true} config={this.state.tableConfig} />
             </Fragment>
         )
     }

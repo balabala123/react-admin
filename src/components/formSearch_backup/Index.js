@@ -7,11 +7,11 @@ import { Form, Input, Button, Select, InputNumber, Radio } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 // action
-import { addDepartmentList, updateDepartmentList } from "@/stroe/action/Department"
+import { addDepartmentList, updateDepartmentList } from "@/store/action/Department"
 // url
-import requestUrl from "@api/requestUrl";
-// api
-import { TableList } from "@api/common";
+import requestUrl from "@server/requestUrl";
+// server
+import { TableList } from "@server/common";
 const { Option } = Select;
 class FormSearch extends Component {
 

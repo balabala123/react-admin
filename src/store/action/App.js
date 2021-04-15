@@ -2,8 +2,8 @@ import { setTokenKey, setUsernameKey, logout, router, login, checkedAll } from "
 // 方法
 import { setToken, setUsername, removeToken, removeUsername } from "@/utils/cookies";
 // API
-import { Login } from "../../api/account";
-import { getUserRole } from "../../api/user";
+import { Login } from "../../server/account";
+import { getUserRole } from "../../server/user";
 // 路由
 import Router from "../../router/index";
 

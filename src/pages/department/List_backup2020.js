@@ -3,8 +3,8 @@ import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 // antd
 import { Button, Switch, message } from "antd";
-// api
-import { Status } from "@api/department";
+// server
+import { Status } from "@server/department";
 // table 组件
 import TableComponent from "@c/tableData/Table";
 import FormSearch from "@c/formSearch/Index";

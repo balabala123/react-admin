@@ -2,7 +2,7 @@ import React, { Component } from "react";
 // 富文本
 import { Editor } from '@tinymce/tinymce-react'
 // API
-import { Upload } from "@api/common";
+import { Upload } from "@server/common";
 class EditorComponent extends Component {
     constructor(props){
         super();

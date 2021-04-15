@@ -2,10 +2,10 @@ import React, { Component, Fragment } from "react";
 // antd
 import { message, Select } from "antd";
 // API
-import { Add, Detailed } from "@/api/job";
-import { requestData } from "@api/common";
+import { Add, Detailed } from "@/server/job";
+import { requestData } from "@server/common";
 // url
-import requestUrl from "@api/requestUrl";
+import requestUrl from "@server/requestUrl";
 // 组件
 import FormCom from "@c/form/Index";
 const { Option } = Select;

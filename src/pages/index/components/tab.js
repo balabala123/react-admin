@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { withRouter } from 'react-router-dom';
 // connect
 import { connect } from "react-redux";
-import { edit as editTabPages } from "@/stroe/action/TabPages";
-import { changeMenu } from "@/stroe/action/Menu";
+import { edit as editTabPages } from "@/store/action/TabPages";
+import { changeMenu } from "@/store/action/Menu";
 import { withAliveScope } from 'react-activation'
 // class 组件
 @withAliveScope
@@ -43,8 +43,12 @@ class TabPages extends Component {
                     }
                     changeMenu({selectedKeys: [pathname], openKeys: [pathname.split("/").slice(0, 3).join('/')]});
                     editTabPages(pages);
+                    console.log('this.props', this.props)
                 }, 50)
+                return;
             }
+            editTabPages(pages);
+            console.log('this.props222', this.props)
         }
     }
     render(){

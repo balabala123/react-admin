@@ -3,14 +3,14 @@ import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 // antd
 import { Button, Switch, message } from "antd";
-// api
-import { Status } from "@api/job";
+// server
+import { Status } from "@server/job";
 // table 组件
 import TableComponent from "@c/tableData/Index";
 // Store
-import Store from "@/stroe/Index";
+import Store from "@/store/Index";
 // action
-import { addStatus } from "@/stroe/action/Config";
+import { addStatus } from "@/store/action/Config";
 class DepartmentList extends Component {
     constructor(props){
         super(props);

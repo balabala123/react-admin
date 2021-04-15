@@ -2,8 +2,8 @@ import React, { Component } from "react";
 // ant
 import { Modal, message, Checkbox } from "antd";
 // API
-import { UserAdd, UserDetailed, UserEdit } from "@/api/user";
-import { GetRoles } from "@/api/permission";
+import { UserAdd, UserDetailed, UserEdit } from "@/server/user";
+import { GetRoles } from "@/server/permission";
 // 组件
 import FormCom from "@c/form/Index";
 import CheckboxAll from "@c/checkboxAll/Index";

@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 // antd
 import { message } from "antd";
 // API
-import { Add, Detailed, Edit } from "@/api/department";
+import { Add, Detailed, Edit } from "@/server/department";
 // 组件
 import FormCom from "@c/form/Index";
 class DepartmentAdd extends Component {

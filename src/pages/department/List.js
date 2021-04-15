@@ -3,11 +3,15 @@ import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 // antd
 import { Button, Switch, message } from "antd";
-// api
-import { Status } from "@api/staff";
+// server
+import { Status } from "@server/department";
 // table 组件
 import TableComponent from "@c/tableData/Index";
-class StaffList extends Component {
+// Store
+import Store from "@/store/Index";
+// action
+import { addStatus } from "@/store/action/Config";
+class DepartmentList extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -21,37 +25,26 @@ class StaffList extends Component {
             keyWork: "",
             // 表头
             tableConfig: {
-                url: "staffList",
+                url: "departmentList",
                 checkbox: true,
                 thead: [
                     { 
-                        title: "姓名", 
-                        dataIndex: "full_name", 
-                        key: "full_name"
-                    },
-                    { 
-                        title: "职位名称", 
-                        dataIndex: "jobName", 
-                        key: "jobName"
-                    },
-                    { 
                         title: "部门名称", 
                         dataIndex: "name", 
-                        key: "name"
-                    },
-                    { 
-                        title: "入职日期", 
-                        dataIndex: "job_entry_date", 
-                        key: "job_entry_date"
+                        key: "name",
+                        render: (name, rowData) => {
+                            return <a href={rowData.id}>{name}</a>
+                        }
                     },
                     { 
                         title: "禁启用", 
                         dataIndex: "status", 
                         key: "status",
                         render: (status, rowData) => {
-                            return <Switch onChange={() => this.onHandlerSwitch(rowData)} loading={rowData.id === this.state.id} checkedChildren="启用" unCheckedChildren="禁用" defaultChecked={status} />
+                            return <Switch onChange={() => this.onHandlerSwitch(rowData)} loading={rowData.id === this.state.id} checkedChildren="启用" unCheckedChildren="禁用" defaultChecked={status === "1" ? true : false} />
                         }
                     },
+                    { title: "人员数量", dataIndex: "number", key: "number" },
                     { 
                         title: "操作", 
                         dataIndex: "operation", 
@@ -61,9 +54,9 @@ class StaffList extends Component {
                             return (
                                 <div className="inline-button">
                                     <Button type="primary">
-                                        <Link to={{ pathname: '/index/staff/add', state:{ id: rowData.staff_id}}}>编辑</Link>
+                                        <Link to={{ pathname: '/index/department/add', state:{ id: rowData.id}}}>编辑</Link>
                                     </Button>
-                                    <Button onClick={() => this.delete(rowData.staff_id)}>删除</Button>
+                                    <Button onClick={() => this.delete(rowData.id)}>删除</Button>
                                     {/* 
                                         在父组件获取子组件的实例
                                         1、在子组件调用父组件方法，并把子组件实例传回给父组件，（已经存储了子组件的实例）
@@ -96,8 +89,18 @@ class StaffList extends Component {
         };
     }
     /** 生命周期挂载完成 */
-    componentDidMount(){}
+    componentDidMount(){
+        Store.subscribe(() =>
+            console.log(Store.getState())
+        );
 
+        Store.dispatch(addStatus({
+            label: "所有",
+            value: "all"
+        }))
+
+        // Store.dispatch(uploadStatus("aaaaa", false))
+    }
     // 获取子组件实例
     getChildRef = (ref) => {
         this.tableComponent = ref; // 存储子组件
@@ -105,13 +108,14 @@ class StaffList extends Component {
     
     /** 禁启用 */
     onHandlerSwitch(data){
+        if(!data.status) { return false; }
         if(this.state.flag) { return false; }
         const requestData = {
-            id: data.staff_id,
-            status: !data.status
+            id: data.id,
+            status: data.status === "1" ? false : true
         }
         // 第一种做法，用组件本身异步
-        this.setState({id: data.staff_id}) 
+        this.setState({id: data.id}) 
         // 第二种做法，自己做的开关
         // this.setState({flag: true}) 
         Status(requestData).then(response => {
@@ -135,4 +139,4 @@ class StaffList extends Component {
         )
     }
 }
-export default StaffList;
+export default DepartmentList;

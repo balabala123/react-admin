@@ -5,7 +5,7 @@ import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
 // 验证
 import { validate_pass } from "../../utils/validate";
 // API
-import { Register } from "../../api/account";
+import { Register } from "../../server/account";
 // 组件
 import Code from "../../components/code/index";
 // 加密

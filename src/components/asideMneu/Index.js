@@ -8,9 +8,9 @@ import { Menu } from "antd";
 import { connect } from "react-redux";
 // action
 //action
-import { getUserRoleAction } from "@/stroe/action/App";
-import { edit as editTabPages } from "@/stroe/action/TabPages";
-import { changeMenu, changeKeys } from "@/stroe/action/Menu";
+import { getUserRoleAction } from "@/store/action/App";
+import { edit as editTabPages } from "@/store/action/TabPages";
+import { changeMenu, changeKeys } from "@/store/action/Menu";
 const { SubMenu } = Menu;
 
 class AsideMenu extends Component {

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 // action
-import { roleMenuAction } from "@/stroe/action/App";
+import { roleMenuAction } from "@/store/action/App";
 // antd
 import { Checkbox } from "antd";
 const CheckboxGroup = Checkbox.Group;

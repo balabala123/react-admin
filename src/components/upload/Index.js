@@ -3,8 +3,8 @@ import React, { Component } from "react";
 import { Upload, message } from "antd";
 // icon
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-// api
-import { UploadToken } from "@/api/common";
+// server
+import { UploadToken } from "@/server/common";
 class UploadComponent extends Component {
     constructor(props){
         super();

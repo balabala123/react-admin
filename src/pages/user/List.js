@@ -1,17 +1,12 @@
 import React, { Component, Fragment } from "react";
-// 
-import { Link } from "react-router-dom";
 // antd
 import { Button, Switch, message } from "antd";
-// api
-import { Status } from "@api/department";
+// server
+import { Status } from "@server/user";
 // table 组件
 import TableComponent from "@c/tableData/Index";
-// Store
-import Store from "@/stroe/Index";
-// action
-import { addStatus } from "@/stroe/action/Config";
-class DepartmentList extends Component {
+import UserModal from "./components/UserModal";
+class StaffList extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -25,26 +20,37 @@ class DepartmentList extends Component {
             keyWork: "",
             // 表头
             tableConfig: {
-                url: "departmentList",
+                url: "userList",
                 checkbox: true,
                 thead: [
                     { 
-                        title: "部门名称", 
-                        dataIndex: "name", 
-                        key: "name",
-                        render: (name, rowData) => {
-                            return <a href={rowData.id}>{name}</a>
-                        }
+                        title: "用户名", 
+                        dataIndex: "username", 
+                        key: "username"
+                    },
+                    { 
+                        title: "真实姓名", 
+                        dataIndex: "truename", 
+                        key: "truename"
+                    },
+                    { 
+                        title: "手机号", 
+                        dataIndex: "phone", 
+                        key: "phone"
                     },
                     { 
                         title: "禁启用", 
                         dataIndex: "status", 
                         key: "status",
                         render: (status, rowData) => {
-                            return <Switch onChange={() => this.onHandlerSwitch(rowData)} loading={rowData.id === this.state.id} checkedChildren="启用" unCheckedChildren="禁用" defaultChecked={status === "1" ? true : false} />
+                            return <Switch onChange={() => this.onHandlerSwitch(rowData)} loading={rowData.id === this.state.id} checkedChildren="启用" unCheckedChildren="禁用" defaultChecked={status} />
                         }
                     },
-                    { title: "人员数量", dataIndex: "number", key: "number" },
+                    { 
+                        title: "权限", 
+                        dataIndex: "role_str", 
+                        key: "role_str"
+                    },
                     { 
                         title: "操作", 
                         dataIndex: "operation", 
@@ -53,9 +59,7 @@ class DepartmentList extends Component {
                         render: (text, rowData) => {
                             return (
                                 <div className="inline-button">
-                                    <Button type="primary">
-                                        <Link to={{ pathname: '/index/department/add', state:{ id: rowData.id}}}>编辑</Link>
-                                    </Button>
+                                    <Button type="primary" onClick={() => this.userModal({status: true, user_id: rowData.id})}>编辑</Button>
                                     <Button onClick={() => this.delete(rowData.id)}>删除</Button>
                                     {/* 
                                         在父组件获取子组件的实例
@@ -82,37 +86,34 @@ class DepartmentList extends Component {
                         style: { width: "100px" },
                         optionsKey: "status"
                     },
-                ]
+                ],
+                formSearchCol: 18,
+                formRightCol: 6,
             },
             // 表的数据
             data: []
         };
     }
     /** 生命周期挂载完成 */
-    componentDidMount(){
-        Store.subscribe(() =>
-            console.log(Store.getState())
-        );
+    componentDidMount(){}
 
-        Store.dispatch(addStatus({
-            label: "所有",
-            value: "all"
-        }))
-
-        // Store.dispatch(uploadStatus("aaaaa", false))
-    }
     // 获取子组件实例
     getChildRef = (ref) => {
         this.tableComponent = ref; // 存储子组件
     }
+    // 获取弹窗子组件实例
+    getUserModalRef = (ref) => { this.child = ref }
+    // 显示弹窗
+    userModal = (data) => {
+        this.child.visibleModal(data);
+    }
     
     /** 禁启用 */
     onHandlerSwitch(data){
-        if(!data.status) { return false; }
         if(this.state.flag) { return false; }
         const requestData = {
             id: data.id,
-            status: data.status === "1" ? false : true
+            status: !data.status
         }
         // 第一种做法，用组件本身异步
         this.setState({id: data.id}) 
@@ -134,9 +135,12 @@ class DepartmentList extends Component {
     render(){
         return (
             <Fragment>
-                <TableComponent onRef={this.getChildRef} batchButton={true} config={this.state.tableConfig} />
+                <TableComponent onRef={this.getChildRef} batchButton={true} config={this.state.tableConfig}>
+                    <Button type="primary" ref="userAdd" onClick={() => this.userModal({ status: true })}>新增用户</Button>
+                </TableComponent>
+                <UserModal onRef={this.getUserModalRef} />
             </Fragment>
         )
     }
 }
-export default DepartmentList;
+export default StaffList;

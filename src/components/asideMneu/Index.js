@@ -6,24 +6,20 @@ import { UserOutlined } from '@ant-design/icons';
 import { Menu } from "antd";
 // connect
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 // action
 //action
 import { getUserRoleAction } from "@/stroe/action/App";
 import { edit as editTabPages } from "@/stroe/action/TabPages";
+import { changeMenu, changeKeys } from "@/stroe/action/Menu";
 const { SubMenu } = Menu;
 
 class AsideMenu extends Component {
     constructor(props){
         super(props);
-        this.state = {
-            selectedKeys: [],
-            openKeys: []
-        };
     }
 
     UNSAFE_componentWillMount(){
-        this.props.actions.headnlerUserRole();
+        this.props.headnlerUserRole();
     }
     
     // 生命周期，在这里多了一层接口请求，并过滤路由
@@ -40,13 +36,12 @@ class AsideMenu extends Component {
     /** 选择菜单  */
     selectMenu = ({item, key, keyPath}) => {
         // 添加页签逻辑-----------start---------------
-        // this.props.history.push(key);
-        let {tabPages, actions, history} = this.props;
-        tabPages[key] = {checked: true, title: item.node.outerText};
-        for (let tabKey in tabPages) {
-            if (tabKey !== key) tabPages[tabKey].checked = false;
+        let {tab: {tabPages}, editTabPages, history} = this.props;
+        let newTabPages = {...tabPages, [key]: {checked: true, title: item.node.outerText}};
+        for (let tabKey in newTabPages) {
+            if (tabKey !== key) newTabPages[tabKey].checked = false;
         }
-        actions.editTabPages(tabPages)
+        editTabPages(newTabPages)
         history.push(key)
         // 添加页签逻辑--------------end-----------------
         const menuHigh = {
@@ -56,17 +51,15 @@ class AsideMenu extends Component {
         this.selectMenuHigh(menuHigh);
     }
     openMenu = (openKeys) => {
-        this.setState({
-            openKeys: [openKeys[openKeys.length - 1]]
-        })
+        this.props.changeKeys([openKeys[openKeys.length - 1]]);
     }
 
     /** 菜单高光 */
     selectMenuHigh = ({selectedKeys, openKeys}) => {
-        this.setState({
+        this.props.changeMenu({
             selectedKeys: [selectedKeys],
             openKeys: [openKeys]
-        })
+        });
     }
 
 
@@ -74,7 +67,6 @@ class AsideMenu extends Component {
     renderMenu = ({title, key}) => {
         return (
             <Menu.Item key={key}>
-                {/* <Link to={key}><span>{title}</span></Link> */}
                 <span>{title}</span>
             </Menu.Item>
         )
@@ -93,9 +85,8 @@ class AsideMenu extends Component {
         )
     }
 
-    render(){
-        const { selectedKeys, openKeys } = this.state;
-        const { routers } = this.props;
+    render () {
+        const {app: {routers}, menu: {selectedKeys, openKeys}} = this.props;
         return (
             <Fragment>
                 <Menu
@@ -118,22 +109,13 @@ class AsideMenu extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-    routers: state.app.rotuers,
-    tabPages: state.tab.tabPages
-})
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        actions: bindActionCreators({
-            headnlerUserRole: getUserRoleAction,
-            editTabPages
-        }, dispatch)
-
-    }
-}
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+    state => state,
+    {
+        headnlerUserRole: getUserRoleAction,
+        changeMenu,
+        changeKeys,
+        editTabPages
+    }
 )(withRouter(AsideMenu));
 

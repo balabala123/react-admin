@@ -6,6 +6,7 @@ const stateData = {
 const tabPagesReducer = function(state = stateData, action) {
     switch(action.type){
         case editPage: {
+            sessionStorage.setItem('tab-pages', JSON.stringify(action.payload.pages));
             return {
                 ...state,
                 tabPages: action.payload.pages

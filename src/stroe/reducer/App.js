@@ -4,7 +4,7 @@ import { getToken, getUsername } from "@/utils/cookies"
 const app = {
     token: "" || getToken(),       // 登录后存储了 token 和 username
     username: "" || getUsername(),
-    rotuers: [],
+    routers: [],
     checked_all: {}
 }
 
@@ -37,7 +37,7 @@ const configReducer = function(state = app, action) {
         case router: {
             return {
                 ...state,
-                rotuers: action.value
+                routers: action.value
             }
         }
         // roleMenu

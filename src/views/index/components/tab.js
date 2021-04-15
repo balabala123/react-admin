@@ -2,32 +2,49 @@ import React, { Component } from "react";
 import { withRouter } from 'react-router-dom';
 // connect
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 import { edit as editTabPages } from "@/stroe/action/TabPages";
+import { changeMenu } from "@/stroe/action/Menu";
+import { withAliveScope } from 'react-activation'
 // class 组件
+@withAliveScope
 class TabPages extends Component {
     constructor(props){
-        super(props); // 初始化默认值 
+        super(props); // 初始化默认值
+        let {editTabPages} = this.props;
+        let pagesStr = sessionStorage.getItem('tab-pages');
+        editTabPages(JSON.parse(pagesStr));
     }
     checkTab = (key, title) => {
         return () => {
-            let {tab, actions, history} = this.props;
-            tab[key] = {checked: true, title: title};
-            for (let tabKey in tab) {
-                if (tabKey !== key) tab[tabKey].checked = false;
+            let {tab, editTabPages, history, changeMenu} = this.props;
+            let pages = {...tab.tabPages};
+            pages[key] = {checked: true, title: title};
+            for (let tabKey in pages) {
+                if (tabKey !== key) pages[tabKey].checked = false;
             }
             history.push(key)
-            actions.editTabPages(tab)
+            changeMenu({selectedKeys: [key], openKeys: [key.split("/").slice(0, 3).join('/')]});
+            editTabPages(pages)
         }
     }
     delTab = (key) => {
         return () => {
-            let {tab, actions, location, history} = this.props;
-            delete tab[key]
+            const { drop } = this.props;
+            let {tab, editTabPages, location, history, changeMenu} = this.props;
+            let pages = {...tab.tabPages};
+            delete pages[key];
+            drop(key);
             if (location.pathname === key) {
-                history.go(-1)
+                history.go(-1);
+                setTimeout(() => {
+                    const {pathname} = this.props.location;
+                    for (let tabKey in pages) {
+                        pages[tabKey].checked = tabKey === pathname;
+                    }
+                    changeMenu({selectedKeys: [pathname], openKeys: [pathname.split("/").slice(0, 3).join('/')]});
+                    editTabPages(pages);
+                }, 50)
             }
-            actions.editTabPages(tab)
         }
     }
     render(){
@@ -35,10 +52,10 @@ class TabPages extends Component {
         return (
             <div>
                 {
-                    Object.keys(tab).map(val => {
+                    Object.keys(tab.tabPages).map(val => {
                         return (
                             <div key={val}>
-                                <span onClick={this.checkTab(val, tab[val].title)}>{tab[val].title}</span>
+                                <span onClick={this.checkTab(val, tab.tabPages[val].title)} style={{color: tab.tabPages[val].checked ? 'red' : 'grey'}}>{tab.tabPages[val].title}</span>
                                 <span onClick={this.delTab(val)}>X</span>
                             </div>
                         )
@@ -49,20 +66,10 @@ class TabPages extends Component {
     }
 }
 
-
-const mapStateToProps = (state) => ({
-    tab: state.tab.tabPages,
-})
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        actions: bindActionCreators({
-            editTabPages
-        }, dispatch)
-    }
-}
-
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+    state => state,
+    {
+        editTabPages,
+        changeMenu
+    }
 )(withRouter(TabPages));

@@ -27,7 +27,7 @@ const router = [
       role: ["user"],
       child: [
         {key: '/index/department/list', title: '部门列表', icon: '', role: ["user"] },
-        {key: '/index/department/add', title: '添加部门', icon: '', role: ["user"] },
+        // {key: '/index/department/add', title: '添加部门', icon: '', role: ["user"] },
       ]
     },
     {

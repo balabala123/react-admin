@@ -10,9 +10,6 @@ import { withAliveScope } from 'react-activation'
 class TabPages extends Component {
     constructor(props){
         super(props); // 初始化默认值
-        let {editTabPages} = this.props;
-        let pagesStr = sessionStorage.getItem('tab-pages');
-        editTabPages(JSON.parse(pagesStr));
     }
     checkTab = (key, title) => {
         return () => {
@@ -53,6 +50,7 @@ class TabPages extends Component {
     }
     render(){
         const { tab } = this.props;
+        console.log('tab', tab)
         return (
             <div>
                 {

@@ -1,10 +1,15 @@
 import React, { Component, Fragment } from "react";
 // antd
-import { message } from "antd";
+import { Button, message } from "antd";
 // API
 import { Add, Detailed, Edit } from "@/server/department";
 // 组件
 import FormCom from "@c/form/Index";
+import { connect } from "react-redux";
+import { del as delTabPages } from "@/store/action/TabPages";
+import { withAliveScope } from 'react-activation'
+// class 组件
+@withAliveScope
 class DepartmentAdd extends Component {
     constructor(props){
         super(props);
@@ -123,13 +128,25 @@ class DepartmentAdd extends Component {
     onHandlerSubmit = (value) => {
         this.state.id ? this.onHandlerEdit(value) : this.onHandlerAdd(value);
     }
-
+    jump = () => {
+        let {delTabPages, history, drop} = this.props;
+        delTabPages({key: '/index/department/add', toKey: '/index/department/list'});
+        drop('/index/department/add');
+        history.push('/index/department/list')
+    }
     render(){
+        console.log('添加部门', this.props)
         return (
             <Fragment>
                 <FormCom formItem={this.state.formItem} formLayout={this.state.formLayout} formConfig={this.state.formConfig} submit={this.onHandlerSubmit} />
-          </Fragment>
+                <Button onClick={this.jump}>关闭</Button>
+            </Fragment>
         )
     }
 }
-export default DepartmentAdd;
+export default connect(
+    state => state,
+    {
+        delTabPages
+    }
+)(DepartmentAdd);

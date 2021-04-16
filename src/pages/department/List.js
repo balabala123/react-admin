@@ -11,6 +11,8 @@ import TableComponent from "@c/tableData/Index";
 import Store from "@/store/Index";
 // action
 import { addStatus } from "@/store/action/Config";
+import { connect } from "react-redux";
+import { add as addTabPages } from "@/store/action/TabPages";
 class DepartmentList extends Component {
     constructor(props){
         super(props);
@@ -131,12 +133,24 @@ class DepartmentList extends Component {
     delete = (id) => {
         this.tableComponent.onHandlerDelete(id)
     }
+    jump = () => {
+        console.log('部门列表', this.props)
+        let {addTabPages, history} = this.props;
+        addTabPages({key: '/index/department/add', title: '添加部门'});
+        history.push('/index/department/add')
+    }
     render(){
         return (
             <Fragment>
+                <Button onClick={this.jump}>添加</Button>
                 <TableComponent onRef={this.getChildRef} batchButton={true} config={this.state.tableConfig} />
             </Fragment>
         )
     }
 }
-export default DepartmentList;
+export default connect(
+    state => state,
+    {
+        addTabPages
+    }
+)(DepartmentList);

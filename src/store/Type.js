@@ -9,5 +9,7 @@ export const router =  "UPDATE_ROUTER";
 export const login =  "HANDLER_LOGIN";
 export const checkedAll = "CHECKED_ALL";
 export const editPage = "EDIT_PAGE";
+export const addPage = "ADD_PAGE";
+export const delPage = "DEL_PAGE";
 export const changeMenuIndex = "CHANGE_MENU_INDEX";
 export const changeOpenKeys = "CHANGE_OPEN_KEYS";
